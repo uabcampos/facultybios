@@ -1,6 +1,6 @@
 async function fetchScholarPage(url) {
   try {
-    const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -22,28 +22,22 @@ async function generateBio(event) {
   const teachingUrl = `${baseUrl}/teaching`;
 
   try {
-    // Fetch bio
+    // Fetch bio page
     const bioDoc = await fetchScholarPage(bioUrl);
     if (!bioDoc) throw new Error('Bio fetch failed');
 
-    // Fetch research (grants)
-    const grantsDoc = await fetchScholarPage(grantsUrl);
-    if (!grantsDoc) throw new Error('Grants fetch failed');
-
-    // Fetch teaching info
-    const teachingDoc = await fetchScholarPage(teachingUrl);
-    if (!teachingDoc) throw new Error('Teaching fetch failed');
-
-    // Extract bio section from Scholar Profile
-    const bioSection = bioDoc.querySelector('.field-name-field-profile-bio');
+    // Extract the bio section using the correct class
+    const bioSection = bioDoc.querySelector('.whiteBox__body___nZQwU');
     const bio = bioSection ? bioSection.innerText : 'Bio not available';
 
-    // Extract research information from grants page
-    const grantsItems = grantsDoc.querySelectorAll('.grant-list-item');
+    // Fetch research (grants) page
+    const grantsDoc = await fetchScholarPage(grantsUrl);
+    const grantsItems = grantsDoc ? grantsDoc.querySelectorAll('.grant-list-item') : [];
     const grants = grantsItems.length ? Array.from(grantsItems).map(item => item.innerText).join(', ') : 'Research information not available';
 
-    // Extract teaching information from teaching page
-    const teachingItems = teachingDoc.querySelectorAll('.teaching-list-item');
+    // Fetch teaching page
+    const teachingDoc = await fetchScholarPage(teachingUrl);
+    const teachingItems = teachingDoc ? teachingDoc.querySelectorAll('.teaching-list-item') : [];
     const teaching = teachingItems.length ? Array.from(teachingItems).map(item => item.innerText).join(', ') : 'Teaching information not available';
 
     // Generate the final bio
@@ -55,12 +49,12 @@ async function generateBio(event) {
 
     // Display the generated bio
     document.getElementById('generated-bio').innerHTML = generatedBio;
+
   } catch (error) {
     console.error(error);
     document.getElementById('generated-bio').innerText = error.message;
   }
 }
-
 
 // Add event listener for form submission
 document.getElementById('faculty-bio-form').addEventListener('submit', generateBio);
