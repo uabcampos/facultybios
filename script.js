@@ -1,6 +1,7 @@
 async function fetchScholarPage(url) {
   try {
-    const response = await fetch(url);
+    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+    const response = await fetch(corsProxy + url); // Prepend the CORS proxy to bypass restrictions
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -12,6 +13,7 @@ async function fetchScholarPage(url) {
     return null;
   }
 }
+
 
 async function generateBio(event) {
   event.preventDefault();
