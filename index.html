@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Faculty Bio Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Faculty Bio Generator</h1>
+    
+    <form id="faculty-bio-form">
+      <label for="scholar-url">UAB Scholar Profile URL:</label>
+      <input type="url" id="scholar-url" name="scholar-url" placeholder="Enter UAB Scholar Profile URL" required>
+      <button type="submit">Generate Bio</button>
+    </form>
+
+    <div id="generated-bio" class="bio-output">
+      <!-- Generated bio will appear here -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
